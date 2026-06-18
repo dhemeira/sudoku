@@ -1,6 +1,6 @@
 # sudoku-app
 
-Starter template for my own React TypeScript projects.
+Sudoku web app.
 
 ## Stack
 
