@@ -10,7 +10,7 @@ function App() {
   useTranslation();
 
   return (
-    <div className="container mx-auto flex min-h-screen flex-col items-center gap-4 p-4 sm:gap-7">
+    <div className="container mx-auto flex min-h-screen flex-col items-center gap-4 p-4 sm:gap-6">
       <LanguagePicker />
       <Title />
       <ErrorBoundary>
