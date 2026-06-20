@@ -52,6 +52,14 @@ function NumPad({
     }
   }
 
+  function handleClick(action: () => void) {
+    if (longPressDigit !== null) {
+      onClearLongPress();
+      return;
+    }
+    action();
+  }
+
   return (
     <div className="max-md:tall:grid-cols-3 max-md:tall:grid-rows-4 narrow:grid-cols-3 narrow:grid-rows-4 grid w-full grid-cols-5 grid-rows-3 gap-1 md:grid-cols-3 md:grid-rows-4">
       {Array.from({ length: 9 }, (_, i) => {
@@ -82,13 +90,11 @@ function NumPad({
                 suppressClick.current = false;
                 return;
               }
-              if (longPressDigit !== null) {
-                onClearLongPress();
-                return;
-              }
-              if (isPencilCornerMode) onCornerMark(digit);
-              else if (isPencilCenterMode) onCenterMark(digit);
-              else onDigit(digit);
+              handleClick(() => {
+                if (isPencilCornerMode) onCornerMark(digit);
+                else if (isPencilCenterMode) onCenterMark(digit);
+                else onDigit(digit);
+              });
             }}>
             {isLongActive && (
               <span className="bg-accent absolute top-1 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full" />
@@ -101,11 +107,7 @@ function NumPad({
         className="bg-surface border-border max-md:tall:col-3 max-md:tall:row-4 narrow:col-3 narrow:row-4 flex h-12 items-center justify-center rounded-md border outline-none md:col-3 md:row-4"
         title="Erase"
         onClick={() => {
-          if (longPressDigit !== null) {
-            onClearLongPress();
-            return;
-          }
-          onErase();
+          handleClick(onErase);
         }}>
         <Eraser className="h-6 w-6" />
       </button>
@@ -117,12 +119,10 @@ function NumPad({
           }
           title="Center"
           onClick={() => {
-            if (longPressDigit !== null) {
-              onClearLongPress();
-              return;
-            }
-            setIsPencilCenterMode((prev: boolean) => !prev);
-            setIsPencilCornerMode(false);
+            handleClick(() => {
+              setIsPencilCenterMode((prev) => !prev);
+              setIsPencilCornerMode(false);
+            });
           }}>
           <Pencil className={isPencilCenterMode ? 'h-7 w-7' : 'h-6 w-6'} />
         </button>
@@ -133,12 +133,10 @@ function NumPad({
           }
           title="Corner"
           onClick={() => {
-            if (longPressDigit !== null) {
-              onClearLongPress();
-              return;
-            }
-            setIsPencilCornerMode((prev: boolean) => !prev);
-            setIsPencilCenterMode(false);
+            handleClick(() => {
+              setIsPencilCornerMode((prev) => !prev);
+              setIsPencilCenterMode(false);
+            });
           }}>
           <Pencil className={isPencilCornerMode ? 'h-7 w-7' : 'h-6 w-6'} />
         </button>
