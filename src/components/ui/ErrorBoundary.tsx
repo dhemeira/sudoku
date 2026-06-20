@@ -17,7 +17,7 @@ function ErrorUI({ error, onRetry }: { error: Error; onRetry: () => void }) {
       <p className="text-text text-lg font-semibold">{t('errorTitle')}</p>
       <p className="text-text-muted text-sm">{error.message}</p>
       <button
-        className="bg-accent text-surface rounded-xl px-4 py-2 text-sm font-medium"
+        className="bg-accent text-surface rounded-xl px-4 py-2 text-sm font-medium outline-none"
         onClick={onRetry}>
         {t('errorRetry')}
       </button>
