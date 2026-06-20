@@ -114,7 +114,7 @@ function NumPad({
       <div className="max-md:tall:col-span-2 narrow:col-span-2 col-span-5 flex w-full flex-row gap-1 md:col-span-2">
         <button
           className={
-            'border-border flex h-12 w-full items-end justify-end rounded-md border p-1 outline-none' +
+            'border-border flex h-12 w-full items-center justify-center rounded-md border p-1 outline-none' +
             (isPencilCenterMode ? ' bg-accent text-white' : ' bg-surface')
           }
           title="Center"
