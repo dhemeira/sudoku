@@ -1,21 +1,19 @@
 import { useTranslation } from 'react-i18next';
-import LanguagePicker from './components/LanguagePicker';
 import { lazy, Suspense } from 'react';
 import ErrorBoundary from './components/ui/ErrorBoundary';
-import Title from './components/Title';
+import TopBar from './components/TopBar';
 
-const Grid = lazy(() => import('./components/Grid'));
+const Board = lazy(() => import('./components/Board'));
 
 function App() {
   useTranslation();
 
   return (
-    <div className="container mx-auto flex min-h-screen flex-col items-center gap-4 p-4 sm:gap-6">
-      <LanguagePicker />
-      <Title />
+    <div className="container mx-auto flex min-h-screen flex-col items-center gap-4 p-2 sm:gap-6 sm:p-4">
+      <TopBar />
       <ErrorBoundary>
         <Suspense>
-          <Grid />
+          <Board />
         </Suspense>
       </ErrorBoundary>
     </div>

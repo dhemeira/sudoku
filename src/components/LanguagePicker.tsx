@@ -20,7 +20,7 @@ function LanguagePicker() {
           key={lng}
           aria-label={LANGUAGES[lng].displayName}
           aria-pressed={i18n.resolvedLanguage === lng}
-          className={`vertical-center z-10 w-full rounded-full py-1 text-center text-base font-medium transition-colors duration-300 ease-in-out ${i18n.resolvedLanguage === lng ? 'text-surface' : 'text-text'} ${lng === 'en' ? 'pl-1' : 'pr-1'}`}
+          className={`vertical-center z-10 w-full rounded-full py-1 text-center text-base font-medium transition-colors duration-300 ease-in-out outline-none ${i18n.resolvedLanguage === lng ? 'text-surface' : 'text-text'} ${lng === 'en' ? 'pl-1' : 'pr-1'}`}
           onClick={() => {
             void i18n.changeLanguage(lng);
           }}>
