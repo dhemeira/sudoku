@@ -3,6 +3,7 @@ import Controls from './Controls';
 import Grid from './Grid';
 import { Plus, RotateCcw } from 'lucide-react';
 import { Grid as GridType } from '~/sudoku/grid';
+import { Cell } from '~/sudoku/cell';
 import { useState } from 'react';
 import { useKeyboard } from '~/hooks/useKeyboard';
 import { useModifierKeys } from '~/hooks/useModifierKeys';
@@ -10,21 +11,9 @@ import { useModifierKeys } from '~/hooks/useModifierKeys';
 function Board() {
   const [grid, setGrid] = useState(() => GridType.random());
 
-  function setCellValue(index: number, digit: number) {
+  function mutateCell(index: number, fn: (cell: Cell) => void) {
     const next = grid.clone();
-    next.cells[index].value = digit;
-    setGrid(next);
-  }
-
-  function toggleCellCornerMark(index: number, digit: number) {
-    const next = grid.clone();
-    next.cells[index].toggleCornerMark(digit);
-    setGrid(next);
-  }
-
-  function toggleCellCenterMark(index: number, digit: number) {
-    const next = grid.clone();
-    next.cells[index].toggleCenterMark(digit);
+    fn(next.cells[index]);
     setGrid(next);
   }
 
@@ -36,31 +25,41 @@ function Board() {
   function enterDigit(digit: number) {
     if (selectedIndex === null) return;
     const current = grid.cells[selectedIndex].value;
-    setCellValue(selectedIndex, current === digit ? 0 : digit);
+    mutateCell(selectedIndex, (cell) => {
+      cell.value = current === digit ? 0 : digit;
+    });
   }
 
   function eraseSelected() {
     if (selectedIndex === null) return;
     const cell = grid.cells[selectedIndex];
     if (cell.value !== 0) {
-      setCellValue(selectedIndex, 0);
+      mutateCell(selectedIndex, (c) => {
+        c.value = 0;
+      });
     } else if (cell.centerMarks.size > 0) {
-      const next = grid.clone();
-      next.cells[selectedIndex].centerMarks.clear();
-      setGrid(next);
+      mutateCell(selectedIndex, (c) => {
+        c.centerMarks.clear();
+      });
     } else if (cell.cornerMarks.size > 0) {
-      const next = grid.clone();
-      next.cells[selectedIndex].cornerMarks.clear();
-      setGrid(next);
+      mutateCell(selectedIndex, (c) => {
+        c.cornerMarks.clear();
+      });
     }
   }
 
   function cornerMarkSelected(digit: number) {
-    if (selectedIndex !== null) toggleCellCornerMark(selectedIndex, digit);
+    if (selectedIndex !== null)
+      mutateCell(selectedIndex, (cell) => {
+        cell.toggleCornerMark(digit);
+      });
   }
 
   function centerMarkSelected(digit: number) {
-    if (selectedIndex !== null) toggleCellCenterMark(selectedIndex, digit);
+    if (selectedIndex !== null)
+      mutateCell(selectedIndex, (cell) => {
+        cell.toggleCenterMark(digit);
+      });
   }
 
   useKeyboard({

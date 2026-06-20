@@ -74,7 +74,7 @@ export class Grid {
     return BOXES[b].map((i) => this.cells[i]);
   }
   peers(i: number): Cell[] {
-    return [...PEERS[i]].map((i) => this.cells[i]);
+    return [...PEERS[i]].map((idx) => this.cells[idx]);
   }
 
   clone(): Grid {

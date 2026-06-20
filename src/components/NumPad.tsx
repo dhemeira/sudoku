@@ -12,20 +12,10 @@ interface Props {
   onErase: () => void;
 }
 
-const isLeftCol: (idx: number) => boolean = (idx) => {
-  return idx % 3 === 0;
-};
-const isRightCol: (idx: number) => boolean = (idx) => {
-  return idx % 3 === 2;
-};
-
-const isTopRow: (idx: number) => boolean = (idx) => {
-  return idx < 3;
-};
-
-const isBottomRow: (idx: number) => boolean = (idx) => {
-  return idx > 5;
-};
+const isLeftCol = (idx: number) => idx % 3 === 0;
+const isRightCol = (idx: number) => idx % 3 === 2;
+const isTopRow = (idx: number) => idx < 3;
+const isBottomRow = (idx: number) => idx > 5;
 
 function NumPad({
   setIsPencilCornerMode,

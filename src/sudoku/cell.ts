@@ -20,13 +20,10 @@ export class Cell {
     this.uid = crypto.randomUUID();
     this.row = row;
     this.col = col;
-    if (value && (value < 0 || value > 9)) {
-      throw new Error('Cell value must be between 0 and 9.');
-    }
-    this.value = value ?? 0;
+    this.isGiven = isGiven ?? false;
+    this._value = value ?? 0;
     this.cornerMarks = new Set();
     this.centerMarks = new Set();
-    this.isGiven = isGiven ?? false;
   }
 
   clone(): Cell {
@@ -36,23 +33,20 @@ export class Cell {
     return c;
   }
 
+  private toggleMark(set: Set<number>, digit: number): Set<number> {
+    const next = new Set(set);
+    if (next.has(digit)) next.delete(digit);
+    else next.add(digit);
+    return next;
+  }
+
   toggleCornerMark(digit: number): void {
-    const next = new Set(this.cornerMarks);
-    if (next.has(digit)) {
-      next.delete(digit);
-    } else {
-      next.add(digit);
-    }
-    this.cornerMarks = next;
+    if (this.isGiven) return;
+    this.cornerMarks = this.toggleMark(this.cornerMarks, digit);
   }
 
   toggleCenterMark(digit: number): void {
-    const next = new Set(this.centerMarks);
-    if (next.has(digit)) {
-      next.delete(digit);
-    } else {
-      next.add(digit);
-    }
-    this.centerMarks = next;
+    if (this.isGiven) return;
+    this.centerMarks = this.toggleMark(this.centerMarks, digit);
   }
 }
