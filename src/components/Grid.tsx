@@ -4,10 +4,10 @@ import { Grid as GridType } from '../sudoku/grid';
 interface Props {
   grid: GridType;
   selectedIndex: number | null;
-  setSelectedIndex: (index: number) => void;
+  onCellClick: (index: number) => void;
 }
 
-function Grid({ grid, selectedIndex, setSelectedIndex }: Props) {
+function Grid({ grid, selectedIndex, onCellClick }: Props) {
   const selectedCell = selectedIndex !== null ? grid.cells[selectedIndex] : null;
   const onlyOneMark =
     selectedCell !== null && selectedCell.cornerMarks.size + selectedCell.centerMarks.size === 1;
@@ -35,7 +35,7 @@ function Grid({ grid, selectedIndex, setSelectedIndex }: Props) {
                   selectedCell.centerMarks.has(cell.value))))
           }
           onClick={() => {
-            setSelectedIndex(index);
+            onCellClick(index);
           }}
         />
       ))}

@@ -20,7 +20,27 @@ function Board() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isPencilCornerMode, setIsPencilCornerMode] = useState(false);
   const [isPencilCenterMode, setIsPencilCenterMode] = useState(false);
+  const [longPressDigit, setLongPressDigit] = useState<number | null>(null);
   useModifierKeys({ setIsPencilCornerMode, setIsPencilCenterMode });
+
+  function handleLongPressDigit(digit: number) {
+    setLongPressDigit((prev) => {
+      if (prev === digit) return null;
+      setIsPencilCornerMode(false);
+      setIsPencilCenterMode(false);
+      return digit;
+    });
+  }
+
+  function handleCellClick(index: number) {
+    setSelectedIndex(index);
+    if (longPressDigit !== null) {
+      const current = grid.cells[index].value;
+      mutateCell(index, (cell) => {
+        cell.value = current === longPressDigit ? 0 : longPressDigit;
+      });
+    }
+  }
 
   function enterDigit(digit: number) {
     if (selectedIndex === null) return;
@@ -87,16 +107,21 @@ function Board() {
           <span className="hidden text-xs md:inline">Reset</span>
         </button>
       </div>
-      <Grid grid={grid} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
+      <Grid grid={grid} selectedIndex={selectedIndex} onCellClick={handleCellClick} />
       <Controls
         setIsPencilCornerMode={setIsPencilCornerMode}
         setIsPencilCenterMode={setIsPencilCenterMode}
         isPencilCornerMode={isPencilCornerMode}
         isPencilCenterMode={isPencilCenterMode}
+        longPressDigit={longPressDigit}
         onDigit={enterDigit}
         onCornerMark={cornerMarkSelected}
         onCenterMark={centerMarkSelected}
         onErase={eraseSelected}
+        onLongPressDigit={handleLongPressDigit}
+        onClearLongPress={() => {
+          setLongPressDigit(null);
+        }}
       />
     </SectionCard>
   );
